@@ -414,12 +414,78 @@
 }
 @keyframes celebrateFadeIn { from { opacity: 0; } to { opacity: 1; } }
 .celebrate-title {
+  position: relative; z-index: 2;
   font-family: 'Fredoka One', cursive; color: #fde68a;
   font-size: clamp(1.5rem, 6vw, 2.6rem); text-shadow: 0 4px 18px rgba(251,191,36,0.55), 0 2px 6px rgba(0,0,0,0.9);
-  margin: 0;
+  margin: 0; animation: celebrateTitlePulse 1.8s ease-in-out infinite;
 }
+@keyframes celebrateTitlePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.045); }
+}
+.celebrate-emoji-row {
+  position: relative; z-index: 2;
+  font-size: clamp(1.2rem, 4vw, 1.8rem); letter-spacing: 0.3em; opacity: 0.9;
+  animation: celebrateEmojiBob 2.4s ease-in-out infinite;
+}
+@keyframes celebrateEmojiBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+.celebrate-image-wrap {
+  position: relative; z-index: 2;
+  animation: celebrateImagePop 0.7s cubic-bezier(0.175,0.885,0.32,1.275) both;
+}
+@keyframes celebrateImagePop { 0% { transform: scale(0.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.celebrate-image-wrap::before {
+  content: ''; position: absolute; inset: -14px; border-radius: 28px; z-index: -1;
+  background: conic-gradient(from 0deg, #fde68a, #fb923c, #f472b6, #60a5fa, #4ade80, #fde68a);
+  filter: blur(10px); opacity: 0.75;
+  animation: celebrateGlowSpin 5s linear infinite;
+}
+@keyframes celebrateGlowSpin { to { transform: rotate(360deg); } }
 .celebrate-image {
+  position: relative;
   max-width: min(80vw, 420px); max-height: 48vh; border-radius: 20px;
   border: 4px solid #fbbf24; box-shadow: 0 12px 40px rgba(0,0,0,0.7);
-  object-fit: contain;
+  object-fit: contain; display: block;
+}
+
+/* Confeti cayendo */
+.confetti-layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.confetti-piece {
+  position: absolute; top: -5%; opacity: 0.95;
+  animation-name: confettiFall; animation-timing-function: ease-in; animation-iteration-count: infinite;
+  box-shadow: 0 0 4px rgba(0,0,0,0.3);
+}
+@keyframes confettiFall {
+  0% { transform: translate(0, -5vh) rotate(0deg); opacity: 1; }
+  100% { transform: translate(var(--drift), 110vh) rotate(600deg); opacity: 0.85; }
+}
+
+/* Estallidos tipo fuegos artificiales */
+.fireworks-layer { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.firework-burst {
+  position: absolute; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--fw-color); opacity: 0;
+  animation: fireworkBurst 2.4s ease-out infinite;
+  box-shadow:
+    0 0 0 0 var(--fw-color),
+    28px 0 0 -2px var(--fw-color), -28px 0 0 -2px var(--fw-color),
+    0 28px 0 -2px var(--fw-color), 0 -28px 0 -2px var(--fw-color),
+    20px 20px 0 -2px var(--fw-color), -20px 20px 0 -2px var(--fw-color),
+    20px -20px 0 -2px var(--fw-color), -20px -20px 0 -2px var(--fw-color);
+}
+@keyframes fireworkBurst {
+  0% { opacity: 0; box-shadow: 0 0 0 0 var(--fw-color); transform: scale(0.2); }
+  15% { opacity: 1; }
+  55% {
+    opacity: 0.9;
+    box-shadow:
+      0 0 0 0 var(--fw-color),
+      42px 0 0 -2px var(--fw-color), -42px 0 0 -2px var(--fw-color),
+      0 42px 0 -2px var(--fw-color), 0 -42px 0 -2px var(--fw-color),
+      30px 30px 0 -2px var(--fw-color), -30px 30px 0 -2px var(--fw-color),
+      30px -30px 0 -2px var(--fw-color), -30px -30px 0 -2px var(--fw-color);
+    transform: scale(1);
+  }
+  100% { opacity: 0; transform: scale(1.15); }
 }

@@ -100,6 +100,57 @@ function MysticPortal({ position = [0, 3.2, -6] }) {
   )
 }
 
+const CONFETTI_COLORS = ['#fde68a', '#fb923c', '#f472b6', '#4ade80', '#60a5fa', '#c4b5fd', '#f87171']
+
+function Confetti() {
+  const pieces = useMemo(() => Array.from({ length: 60 }).map((_, i) => ({
+    id: i,
+    left: Math.random() * 100,
+    delay: Math.random() * 2.4,
+    duration: 3.2 + Math.random() * 2.4,
+    color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+    size: 6 + Math.random() * 8,
+    drift: (Math.random() * 2 - 1) * 60,
+    round: Math.random() < 0.5,
+  })), [])
+  return (
+    <div className="confetti-layer">
+      {pieces.map((p) => (
+        <span
+          key={p.id}
+          className="confetti-piece"
+          style={{
+            left: `${p.left}%`,
+            width: p.size, height: p.size,
+            background: p.color,
+            borderRadius: p.round ? '50%' : '2px',
+            animationDelay: `${p.delay}s`,
+            animationDuration: `${p.duration}s`,
+            '--drift': `${p.drift}px`,
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
+function Fireworks() {
+  const bursts = useMemo(() => Array.from({ length: 5 }).map((_, i) => ({
+    id: i,
+    left: 12 + Math.random() * 76,
+    top: 8 + Math.random() * 40,
+    delay: Math.random() * 3,
+    color: CONFETTI_COLORS[(i * 2) % CONFETTI_COLORS.length],
+  })), [])
+  return (
+    <div className="fireworks-layer">
+      {bursts.map((b) => (
+        <span key={b.id} className="firework-burst" style={{ left: `${b.left}%`, top: `${b.top}%`, animationDelay: `${b.delay}s`, '--fw-color': b.color }} />
+      ))}
+    </div>
+  )
+}
+
 export default function EndingStage({ svgRef, message, onRestart }) {
   // dialogue -> waving -> walking -> flash -> celebrate
   const [stage, setStage] = useState('dialogue')
@@ -162,9 +213,14 @@ export default function EndingStage({ svgRef, message, onRestart }) {
 
       {stage === 'celebrate' && (
         <div className="celebrate-screen">
-          <h1 className="celebrate-title">¡Felicidades, ganaste!</h1>
-          <img src="/images/mapacheend.jpg" alt="Mapache Mapachoso" className="celebrate-image" />
-          <button className="btn-action w-auto px-8 py-3 mt-4" onClick={onRestart}>🔄 Jugar otra vez</button>
+          <Confetti />
+          <Fireworks />
+          <div className="celebrate-emoji-row" aria-hidden="true">🎉 🍇 ✨ 🎊 🥳 ✨ 🍇 🎉</div>
+          <h1 className="celebrate-title">¡Felicidades, ganaste! 🏆</h1>
+          <div className="celebrate-image-wrap">
+            <img src="/images/mapacheend.jpg" alt="Mapache Mapachoso" className="celebrate-image" />
+          </div>
+          <button className="btn-action w-auto px-8 py-3 mt-2" style={{ position: 'relative', zIndex: 2 }} onClick={onRestart}>🔄 Jugar otra vez</button>
         </div>
       )}
     </div>

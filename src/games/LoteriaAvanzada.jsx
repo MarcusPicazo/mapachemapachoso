@@ -6,9 +6,15 @@ import BoardLight from './common/BoardLight'
 import ResponsiveCamera from './common/ResponsiveCamera'
 import { sfx } from '../utils/audio'
 
-const SIZE = 5
+// El tablero tiene 20 casillas (a completar), pero el mazo trae las 30
+// figuras del pool completo -- las 20 propias mas 10 "de relleno" que jamas
+// calzan con la cartilla, dando margen real para desperdiciar sin que la
+// partida sea imposible (las 20 propias SIEMPRE terminan saliendo, pues el
+// mazo es el pool entero barajado).
+const COLS = 5
+const ROWS = 4
 const CARD_SPACING = 1.0
-const TOTAL = SIZE * SIZE
+const TOTAL = COLS * ROWS
 
 function TwinklingStar({ position, scale }) {
   const ref = useRef()
@@ -81,7 +87,8 @@ export default function LoteriaAvanzada({ active, onWin, onLose, onHud }) {
     { text: `Cartilla: ${playerMarked.size}/${TOTAL}`, tone: 'green' },
   ])
 
-  const offset = -((SIZE - 1) * CARD_SPACING) / 2
+  const offsetX = -((COLS - 1) * CARD_SPACING) / 2
+  const offsetZ = -((ROWS - 1) * CARD_SPACING) / 2
 
   return (
     <group>
@@ -103,10 +110,10 @@ export default function LoteriaAvanzada({ active, onWin, onLose, onHud }) {
 
       <group position={[0, 0, 0.8]}>
         {playerCard.map((sym, i) => {
-          const col = i % SIZE
-          const row = Math.floor(i / SIZE)
-          const x = offset + col * CARD_SPACING
-          const z = offset + row * CARD_SPACING
+          const col = i % COLS
+          const row = Math.floor(i / COLS)
+          const x = offsetX + col * CARD_SPACING
+          const z = offsetZ + row * CARD_SPACING
           const isMarked = playerMarked.has(i)
           return (
             <group key={i} position={[x, 0, z]}>

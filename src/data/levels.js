@@ -111,9 +111,9 @@ export const LEVELS = [
   },
   {
     id: 19, game: 'loteriaAvanzada', biome: 'portal_tower',
-    title: 'Lotería de las Estrellas', subtitle: 'Completa la cartilla entera para trazar el mapa estelar.',
+    title: 'Lotería de las Estrellas', subtitle: 'Completa las 20 casillas de tu cartilla para trazar el mapa estelar.',
     dialogue: 'Casi llegamos a la cima. Necesitamos trazar el mapa estelar completo. ¡Marca toda la cartilla, Jazz, ya casi estamos en casa!',
-    instructions: 'Arriba aparece la figura cantada. Tócala en tu cartilla si la tienes. Se cantarán 30 cartas (5 de repuesto) para que tengas más oportunidades de completar las 25 casillas.',
+    instructions: 'Arriba aparece la figura cantada. Tócala rápido en tu cartilla si la tienes, antes de que salga la siguiente. Se cantarán 30 cartas en total (10 no son tuyas, para que tengas margen) y necesitas completar las 20 casillas de tu cartilla.',
   },
   {
     id: 20, game: 'mixChallenge', biome: 'portal_tower',

@@ -1,4 +1,4 @@
-// 25 símbolos únicos (5 formas MUY distintas entre sí x 5 colores) usados por
+// 30 símbolos únicos (5 formas MUY distintas entre sí x 6 colores) usados por
 // Memorama, Lotería y Mix Challenge. Se eligieron siluetas muy diferentes
 // (estrella, corazón, luna, gema, gota) para que sean fáciles de diferenciar
 // a simple vista, incluso en ángulo o con el mismo color.
@@ -9,6 +9,7 @@ const COLORS = [
   { name: 'green', hex: '#22c55e' },
   { name: 'gold', hex: '#f59e0b' },
   { name: 'purple', hex: '#a855f7' },
+  { name: 'pink', hex: '#ec4899' },
 ]
 
 export const SYMBOLS = SHAPES.flatMap((shape) => COLORS.map((c) => ({ shape, color: c.hex, key: `${shape}-${c.name}` })))
