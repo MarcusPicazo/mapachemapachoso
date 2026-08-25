@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&display=swap');
+
+.raccoon-wrap {
+  position: absolute; bottom: 0; left: 0; width: 100%; height: 34vh;
+  z-index: 30; display: flex; align-items: flex-end; justify-content: center;
+  pointer-events: none;
+}
+
+#mapache-svg {
+  width: clamp(150px, 34vh, 260px); height: auto; transform-origin: bottom center;
+  filter: drop-shadow(0 15px 20px rgba(0,0,0,0.7)); transition: filter 0.3s ease;
+}
+
+#tail { transform-origin: 150px 150px; animation: tailWag 2s ease-in-out infinite alternate; }
+@keyframes tailWag { 0% { transform: rotate(-8deg); } 100% { transform: rotate(18deg); } }
+
+#body-group { transform-origin: 100px 150px; animation: breathe 1.5s ease-in-out infinite alternate; }
+@keyframes breathe { 0% { transform: scaleY(1); } 100% { transform: scaleY(1.03) scaleX(1.01); } }
+
+@keyframes eyesAction {
+  0%, 43%, 47%, 80%, 100% { transform: scaleY(1); }
+  45% { transform: scaleY(0.1); }
+  85%, 95% { transform: scaleY(0.1); }
+}
+#eyes-group { transform-origin: 100px 72px; animation: eyesAction 6s infinite; }
+
+@keyframes wideSmile {
+  0%, 80%, 100% { transform: scale(1) translateY(0); stroke-width: 4; }
+  85%, 95% { transform: scale(1.3) translateY(-2px); stroke-width: 5; }
+}
+#mouth-smile { transform-origin: 100px 105px; animation: wideSmile 6s infinite; }
+#mouth-open { opacity: 0; transform-origin: 100px 105px; }
+
+/* Estado: fase de uvas (esperando/arrastrando) - mordiscos suaves sin alterar el diseño base */
+.raccoon-wrap.eating #mouth-smile { animation: bite 0.35s ease-in-out infinite; }
+@keyframes bite {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50% { transform: scale(1.5, 0.6) translateY(3px); }
+}
+.raccoon-wrap.eating #body-group { animation: breathe 0.4s ease-in-out infinite alternate; }
+
+/* Estado: mordisco real al recibir una uva - ojos cerrados, boca abierta con colmillos */
+.raccoon-wrap.chomp #eyes-group { animation: none; transform: scaleY(0.1); }
+.raccoon-wrap.chomp #mouth-smile { opacity: 0; }
+.raccoon-wrap.chomp #mouth-open { animation: chompMouth 0.55s cubic-bezier(0.34,1.56,0.64,1); }
+.raccoon-wrap.chomp #body-group { animation: chompBounce 0.55s ease-in-out; }
+@keyframes chompMouth {
+  0% { opacity: 0; transform: scale(0.6); }
+  30% { opacity: 1; transform: scale(1.15); }
+  70% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.85); }
+}
+@keyframes chompBounce {
+  0%, 100% { transform: scaleY(1); }
+  40% { transform: scaleY(0.92) scaleX(1.04) translateY(3px); }
+}
+
+.raccoon-wrap.talking #mouth-smile { animation: talk 0.4s ease-in-out infinite; }
+@keyframes talk {
+  0%, 100% { transform: scale(1,1); }
+  50% { transform: scale(0.85, 1.3); }
+}
+
+/* Estado: despedida final - agita la mano derecha en su lugar */
+.raccoon-wrap.waving #arm-right { transform-origin: 140px 130px; animation: waveArm 0.5s ease-in-out infinite; }
+@keyframes waveArm {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-38deg); }
+}
+
+/* Estado: rie a carcajadas - ojos cerrados, boca abierta con colmillos, un par
+   de rebotes (a diferencia de "chomp" que es un solo mordisco rapido) */
+.raccoon-wrap.laughing #eyes-group { animation: none; transform: scaleY(0.1); }
+.raccoon-wrap.laughing #mouth-smile { opacity: 0; }
+.raccoon-wrap.laughing #mouth-open { animation: laughMouth 0.9s ease-in-out; }
+.raccoon-wrap.laughing #body-group { animation: laughBounce 0.9s ease-in-out; }
+@keyframes laughMouth {
+  0%, 100% { opacity: 0; transform: scale(0.6); }
+  15%, 45%, 75% { opacity: 1; transform: scale(1.15); }
+  30%, 60%, 90% { opacity: 1; transform: scale(0.95); }
+}
+@keyframes laughBounce {
+  0%, 100% { transform: scaleY(1) translateY(0); }
+  20%, 50%, 80% { transform: scaleY(0.92) scaleX(1.04) translateY(4px); }
+  35%, 65% { transform: scaleY(1.02) translateY(-2px); }
+}
+
+/* Estado: camina hacia el fondo (profundidad) donde esta el portal, encogiendose
+   hasta desaparecer absorbido, en vez de salir caminando de lado. */
+.raccoon-wrap.walking-to-portal { animation: walkToPortal 2.3s ease-in forwards; }
+.raccoon-wrap.walking-to-portal #arm-right { transform-origin: 140px 130px; animation: waveArm 0.4s ease-in-out infinite; }
+@keyframes walkToPortal {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  18% { transform: translate(-1.5%, -5%) scale(0.93); opacity: 1; }
+  40% { transform: translate(1.5%, -15%) scale(0.74); opacity: 1; }
+  65% { transform: translate(-1%, -29%) scale(0.48); opacity: 1; }
+  88% { transform: translate(1%, -43%) scale(0.2); opacity: 1; }
+  100% { transform: translate(0%, -48%) scale(0.04); opacity: 0; }
+}
+
+.ending-replay-wrap {
+  position: absolute; left: 0; right: 0; bottom: 6vh; z-index: 32;
+  display: flex; justify-content: center; opacity: 0;
+  animation: replayFadeIn 0.6s ease-out 0.3s forwards;
+}
+@keyframes replayFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
